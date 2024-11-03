@@ -10,4 +10,8 @@ public class AppApplication {
 		SpringApplication.run(AppApplication.class, args);
 	}
 
+	public static int plus(int x, int y) {
+		return x + y;
+	}
+
 }
