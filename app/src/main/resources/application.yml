@@ -1,0 +1,13 @@
+spring:
+
+  application:
+    name: app
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    generate-ddl: true
+
+  profiles:
+    active: development
