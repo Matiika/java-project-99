@@ -9,6 +9,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Column;
 
 
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -27,7 +28,7 @@ import java.time.LocalDate;
 @EntityListeners(AuditingEntityListener.class)
 @Getter
 @Setter
-public class User {
+public class User implements BaseEntity{
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private long id;
@@ -43,7 +44,8 @@ public class User {
     private String email;
 
     @NotBlank
-    private String password;
+    @Size(min = 3, max = 100)
+    private String passwordDigest;
 
     @CreatedDate
     private LocalDate createdAt;
