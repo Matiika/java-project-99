@@ -28,7 +28,7 @@ import java.time.LocalDate;
 @EntityListeners(AuditingEntityListener.class)
 @Getter
 @Setter
-public class User implements BaseEntity{
+public class User implements BaseEntity {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private long id;

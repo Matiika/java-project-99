@@ -1,7 +1,6 @@
 package hexlet.code.app.util;
 
 import hexlet.code.app.DTO.UserCreateDTO;
-import hexlet.code.app.DTO.UserDTO;
 import hexlet.code.app.model.User;
 import jakarta.annotation.PostConstruct;
 import lombok.Getter;
