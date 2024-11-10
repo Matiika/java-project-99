@@ -62,7 +62,7 @@ public class UsersControllerTest {
                 .getResponse();
         var body = response.getContentAsString();
 
-        List<UserDTO> actual = om.readValue(body, new TypeReference<>() {});
+        List<UserDTO> actual = om.readValue(body, new TypeReference<>(){} );
         var expected = userRepository.findAll().stream()
                 .map(userMapper::map)  // преобразуем User в UserDTO
                 .toList();
