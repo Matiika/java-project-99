@@ -23,6 +23,13 @@ public class DataInitializer implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-
+//        var faker = new Faker();
+//        var email = "hexlet@example.com";
+//        var userData = new UserCreateDTO();
+//        userData.setEmail(email);
+//        userData.setPassword("qwerty");
+//        userData.setFirstName(faker.name().firstName());
+//        userData.setLastName(faker.name().lastName());
+//        userService.create(userData);
     }
 }
