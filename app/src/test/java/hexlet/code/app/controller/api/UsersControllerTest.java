@@ -3,8 +3,11 @@ package hexlet.code.app.controller.api;
 import hexlet.code.app.DTO.UserDTO;
 import hexlet.code.app.mapper.UserMapper;
 import hexlet.code.app.model.User;
-import hexlet.code.app.repository.UserPerository;
+import hexlet.code.app.repository.UserRepository;
 import hexlet.code.app.util.ModelGenerator;
+
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
@@ -14,13 +17,16 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.HashMap;
 
 
 import org.assertj.core.api.Assertions;
 import org.instancio.Instancio;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -28,6 +34,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.JwtRequestPostProcessor;
 import org.springframework.test.web.servlet.MockMvc;
+
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.datafaker.Faker;
@@ -43,7 +50,7 @@ public class UsersControllerTest {
     @Autowired
     private Faker faker; // Библиотека для генерации тестовых данных
     @Autowired
-    private UserPerository userRepository; // Репозиторий для работы с БД
+    private UserRepository userRepository; // Репозиторий для работы с БД
     @Autowired
     private ModelGenerator modelGenerator; // Генератор моделей данных
     @Autowired
@@ -54,18 +61,47 @@ public class UsersControllerTest {
     private JwtRequestPostProcessor token; // Для имитации JWT токена в запросах
     private User testUser; // Тестовый пользователь для использования в тестах
 
+
+    @BeforeEach
+    public void setUp() {
+        mockMvc = MockMvcBuilders.webAppContextSetup(wac)
+                .defaultResponseCharacterEncoding(StandardCharsets.UTF_8)
+                .apply(springSecurity())
+                .build();
+
+        token = jwt().jwt(builder -> builder.subject("hexlet@example.com"));
+
+        testUser = Instancio.of(modelGenerator.getUserModel())
+                .create();
+        userRepository.save(testUser);
+    }
+
     @Test
     public void testIndex() throws Exception {
-        var response = mockMvc.perform(get("/users"))
+        var response = mockMvc.perform(get("/api/users").with(jwt()))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse();
         var body = response.getContentAsString();
 
-        List<UserDTO> actual = om.readValue(body, new TypeReference<>() { });
-        var expected = userRepository.findAll().stream()
-                .map(userMapper::map)  // преобразуем User в UserDTO
-                .toList();
+        System.out.println("Response Body: " + body);
+
+
+        List<UserDTO> userDTOS = om.readValue(body, new TypeReference<>() {});
+
+        var actual = userDTOS.stream().map(userMapper::map).toList();
+        var expected = userRepository.findAll();
+
+        Assertions.assertThat(actual).hasSize(expected.size());
+
+// Validate the contents of the list
+        for (int i = 0; i < actual.size(); i++) {
+            Assertions.assertThat(actual.get(i).getEmail()).isEqualTo(expected.get(i).getEmail());
+            Assertions.assertThat(actual.get(i).getFirstName()).isEqualTo(expected.get(i).getFirstName());
+            Assertions.assertThat(actual.get(i).getLastName()).isEqualTo(expected.get(i).getLastName());
+        }
+
+        System.out.println("Expected: " + body);
         Assertions.assertThat(actual).containsExactlyInAnyOrderElementsOf(expected);
     }
 
@@ -74,7 +110,8 @@ public class UsersControllerTest {
         var data = Instancio.of(modelGenerator.getUserCreateDTOModel())
                 .create();
 
-        var request = post("/users")
+        var request = post("/api/users")
+                .with(token)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(om.writeValueAsString(data));
         mockMvc.perform(request)
@@ -98,7 +135,8 @@ public class UsersControllerTest {
         var data = new HashMap<>();
         data.put("firstName", "Mike");
 
-        var request = put("/users/" + user.getId())
+        var request = put("/api/users/" + user.getId())
+                .with(token)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(om.writeValueAsString(data));
 
@@ -116,13 +154,13 @@ public class UsersControllerTest {
 
         userRepository.save(user);
 
-        var request = get("/users/" + user.getId());
+        var request = get("/api/users/" + user.getId()).with(token);
         var result = mockMvc.perform(request)
                 .andExpect(status().isOk())
                 .andReturn();
         var body = result.getResponse().getContentAsString();
         assertThatJson(body).and(
-                v -> v.node("email").isEqualTo(user.getEmail()),
+                v -> v.node("username").isEqualTo(user.getEmail()),
                 v -> v.node("firstName").isEqualTo(user.getFirstName()),
                 v -> v.node("lastName").isEqualTo(user.getLastName()));
     }
