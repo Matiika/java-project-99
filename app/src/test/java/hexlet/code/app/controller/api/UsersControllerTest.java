@@ -87,7 +87,7 @@ public class UsersControllerTest {
         System.out.println("Response Body: " + body);
 
 
-        List<UserDTO> userDTOS = om.readValue(body, new TypeReference<>() {});
+        List<UserDTO> userDTOS = om.readValue(body, new TypeReference<>() { });
 
         var actual = userDTOS.stream().map(userMapper::map).toList();
         var expected = userRepository.findAll();
