@@ -38,19 +38,16 @@ public class User implements UserDetails, BaseEntity {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     @EqualsAndHashCode.Include
-    private long id;
+    private Long id;
 
     @NotBlank
-    @EqualsAndHashCode.Include
     private String firstName;
 
     @NotBlank
-    @EqualsAndHashCode.Include
     private String lastName;
 
     @Email
     @Column(unique = true)
-    @EqualsAndHashCode.Include
     private String email;
 
     @NotBlank

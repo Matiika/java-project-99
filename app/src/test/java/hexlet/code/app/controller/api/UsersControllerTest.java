@@ -1,6 +1,7 @@
 package hexlet.code.app.controller.api;
 
 import hexlet.code.app.DTO.UserDTO;
+import hexlet.code.app.DTO.UserUpdateDTO;
 import hexlet.code.app.mapper.UserMapper;
 import hexlet.code.app.model.User;
 import hexlet.code.app.repository.UserRepository;
@@ -126,25 +127,38 @@ public class UsersControllerTest {
 
     @Test
     public void testUpdate() throws Exception {
-
+        // Создаем тестового пользователя
         var user = Instancio.of(modelGenerator.getUserModel())
                 .create();
 
-        userRepository.save(user);
+        // Сохраняем в базу и запоминаем ID
+        var savedUser = userRepository.save(user);
+        long userId = savedUser.getId();
 
-        var data = new HashMap<>();
-        data.put("firstName", "Mike");
+        // Подготавливаем данные для обновления
+        UserDTO dto = userMapper.map(user);
+        dto.setFirstName("Mike");
 
-        var request = put("/api/users/" + user.getId())
-                .with(token)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(om.writeValueAsString(data));
+        // Выполняем запрос, используя явное указание ID в URL
+        mockMvc.perform(put("/api/users/{id}", userId)
+                        .with(token)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(om.writeValueAsString(dto)))
+                .andExpect(status().isForbidden());
 
-        mockMvc.perform(request)
+        token = jwt().jwt(builder -> builder.subject(savedUser.getEmail()));
+
+        mockMvc.perform(put("/api/users/{id}", userId)
+                        .with(token)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(om.writeValueAsString(dto)))
                 .andExpect(status().isOk());
 
-        var userWithUpdate = userRepository.findById(user.getId()).get();
-        assertThat(userWithUpdate.getFirstName()).isEqualTo(("Mike"));
+
+        // Проверяем обновление, явно используя ID для поиска
+        var updatedUser = userRepository.findById(userId).orElseThrow();
+        assertThat(updatedUser.getId()).isEqualTo(userId); // Явно проверяем что ID не изменился
+        assertThat(updatedUser.getFirstName()).isEqualTo("Mike");
     }
 
     @Test
