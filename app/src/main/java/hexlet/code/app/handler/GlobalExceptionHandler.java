@@ -20,12 +20,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 
-    @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity<Map<String, Object>> handleAccessDeniedException(AccessDeniedException ex) {
-        Map<String, Object> response = new HashMap<>();
-        response.put("error", "Access Denied");
-        response.put("code", HttpStatus.FORBIDDEN.value());
-        response.put("message", "You do not have permission to perform this action.");
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
-    }
+//    @ExceptionHandler(AccessDeniedException.class)
+//    public ResponseEntity<Map<String, Object>> handleAccessDeniedException(AccessDeniedException ex) {
+//        Map<String, Object> response = new HashMap<>();
+//        response.put("error", "Access Denied");
+//        response.put("code", HttpStatus.FORBIDDEN.value());
+//        response.put("message", "You do not have permission to perform this action.");
+//        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
+//    }
 }
