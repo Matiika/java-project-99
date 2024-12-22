@@ -6,10 +6,13 @@ import hexlet.code.app.DTO.UserUpdateDTO;
 import hexlet.code.app.exception.ResourceNotFoundException;
 import hexlet.code.app.mapper.UserMapper;
 import hexlet.code.app.repository.UserRepository;
+import hexlet.code.app.service.CustomUserDetailsService;
 import hexlet.code.app.util.UserUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.CustomAutowireConfigurer;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -37,6 +40,8 @@ public class UsersController {
             @userRepository.findById(#id).get().getEmail() == authentication.getName()
         """;
 
+    private final CustomUserDetailsService userService;
+
     @Autowired
     private UserRepository userRepository;
 
@@ -46,13 +51,14 @@ public class UsersController {
     private final UserUtils userUtils;
 
     @GetMapping(path = "")
-    @ResponseStatus(HttpStatus.OK)
-    public List<UserDTO> index() {
-        var users = userRepository.findAll()
-                .stream()
-                .map(user -> userMapper.map(user))
+    ResponseEntity<List<UserDTO>> index() {
+        var users = userRepository.findAll();
+        var result = users.stream()
+                .map(userMapper::map)
                 .toList();
-        return users;
+        return ResponseEntity.ok()
+                .header("X-Total-Count", String.valueOf(users.size()))
+                .body(result);
     }
 
     @GetMapping(path = "/{id}")
@@ -66,13 +72,19 @@ public class UsersController {
     @PostMapping(path = "")
     @ResponseStatus(HttpStatus.CREATED)
     public UserDTO create(@RequestBody UserCreateDTO userCreateDTO) {
-        var user = userMapper.map(userCreateDTO);
-        System.out.println("Email before save: " + user.getEmail());
-        userRepository.save(user);
-        System.out.println("Email after save: " + user.getEmail());
-        System.out.println("Email with Mapper: " + userMapper.map(user).getUsername());
-        return userMapper.map(user);
+        return userService.create(userCreateDTO);
     }
+
+//    @PostMapping(path = "")
+//    @ResponseStatus(HttpStatus.CREATED)
+//    public UserDTO create(@RequestBody UserCreateDTO userCreateDTO) {
+//        var user = userMapper.map(userCreateDTO);
+//        System.out.println("Email before save: " + user.getEmail());
+//        userRepository.save(user);
+//        System.out.println("Email after save: " + user.getEmail());
+//        System.out.println("Email with Mapper: " + userMapper.map(user).getUsername());
+//        return userMapper.map(user);
+//    }
 
 //    @PutMapping(path = "/{id}")
 //    @PreAuthorize(ONLY_OWNER_BY_ID)
@@ -96,25 +108,32 @@ public class UsersController {
     @PreAuthorize(ONLY_OWNER_BY_ID)
     @ResponseStatus(HttpStatus.OK)
     public UserDTO update(@RequestBody UserUpdateDTO userUpdateDTO, @PathVariable Long id) {
-        var user = userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
-
-        // Получаем текущего аутентифицированного пользователя
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentUsername = authentication.getName();
-
-        // Проверяем, что текущий пользователь является владельцем профиля
-        if (!currentUsername.equals(user.getUsername())) {
-            throw new ResponseStatusException(
-                    HttpStatus.FORBIDDEN,
-                    "You do not have permission to update this user"
-            );
-        }
-
-        userMapper.update(userUpdateDTO, user);
-        userRepository.save(user);
-        return userMapper.map(user);
+        return userService.update(userUpdateDTO, id);
     }
+
+//    @PutMapping(path = "/{id}")
+//    @PreAuthorize(ONLY_OWNER_BY_ID)
+//    @ResponseStatus(HttpStatus.OK)
+//    public UserDTO update(@RequestBody UserUpdateDTO userUpdateDTO, @PathVariable Long id) {
+//        var user = userRepository.findById(id)
+//                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+//
+//        // Получаем текущего аутентифицированного пользователя
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        String currentUsername = authentication.getName();
+//
+//        // Проверяем, что текущий пользователь является владельцем профиля
+//        if (!currentUsername.equals(user.getUsername())) {
+//            throw new ResponseStatusException(
+//                    HttpStatus.FORBIDDEN,
+//                    "You do not have permission to update this user"
+//            );
+//        }
+//
+//        userMapper.update(userUpdateDTO, user);
+//        userRepository.save(user);
+//        return userMapper.map(user);
+//    }
 
     @DeleteMapping(path = "/{id}")
     @PreAuthorize(ONLY_OWNER_BY_ID)
