@@ -1,6 +1,9 @@
 package hexlet.code.app.util;
 
+import hexlet.code.app.DTO.TaskStatusCreateDTO;
+import hexlet.code.app.DTO.TaskStatusUpdateDTO;
 import hexlet.code.app.DTO.UserCreateDTO;
+import hexlet.code.app.model.TaskStatus;
 import hexlet.code.app.model.User;
 import jakarta.annotation.PostConstruct;
 import lombok.Getter;
@@ -8,6 +11,7 @@ import net.datafaker.Faker;
 import org.instancio.Instancio;
 import org.instancio.Model;
 import org.instancio.Select;
+import org.openapitools.jackson.nullable.JsonNullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -41,5 +45,28 @@ public class ModelGenerator {
                 .toModel();
     }
 
+    public Model<TaskStatus> getTaskStatusModel() {
+        return Instancio.of(TaskStatus.class)
+                .ignore(Select.field(TaskStatus::getId))
+                .supply(Select.field(TaskStatus::getName), () -> faker.name().title())
+                .supply(Select.field(TaskStatus::getSlug), () -> faker.internet().slug())
+                .toModel();
+    }
+
+    public Model<TaskStatusCreateDTO> getTaskStatusCreateDTOModel() {
+        return Instancio.of(TaskStatusCreateDTO.class)
+                .supply(Select.field(TaskStatusCreateDTO::getName), () -> faker.name().title())
+                .supply(Select.field(TaskStatusCreateDTO::getSlug), () -> faker.internet().slug())
+                .toModel();
+    }
+
+    public Model<TaskStatusUpdateDTO> getTaskStatusUpdateDTOModel() {
+        return Instancio.of(TaskStatusUpdateDTO.class)
+                .supply(Select.field(TaskStatusUpdateDTO::getName),
+                        () -> JsonNullable.of(faker.name().title()))
+                .supply(Select.field(TaskStatusUpdateDTO::getSlug),
+                        () -> JsonNullable.of(faker.internet().slug()))
+                .toModel();
+    }
 
 }
