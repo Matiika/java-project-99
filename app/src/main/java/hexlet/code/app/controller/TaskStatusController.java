@@ -46,7 +46,6 @@ public class TaskStatusController {
 
     @PostMapping(path = "")
     @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("isAuthenticated()")
     public TaskStatusDTO create (@RequestBody TaskStatusCreateDTO taskStatusCreateDTO) {
         var taskStatus = taskStatusMapper.map(taskStatusCreateDTO);
         taskStatusRepository.save(taskStatus);
@@ -55,7 +54,6 @@ public class TaskStatusController {
 
     @PutMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("isAuthenticated()")
     public TaskStatusDTO update (@RequestBody TaskStatusUpdateDTO taskStatusUpdateDTO, @PathVariable Long id){
         var taskStatus = taskStatusRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Not found"));
@@ -66,7 +64,6 @@ public class TaskStatusController {
 
     @DeleteMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PreAuthorize("isAuthenticated()")
     public void delete (@PathVariable Long id) {
         var user = taskStatusRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
