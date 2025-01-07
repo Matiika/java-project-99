@@ -30,21 +30,15 @@ public class DataInitializer implements ApplicationRunner {
     @Autowired
     private final TaskStatusRepository taskStatusRepository;
 
-
-
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        var faker = new Faker();
-        var userData = new UserCreateDTO();
-        userData.setEmail("hexlet@example.com");
-        userData.setPassword("qwerty");
-        userData.setFirstName(faker.name().firstName());
-        userData.setLastName(faker.name().lastName());
-        if (!userRepository.findByEmail("hexlet@example.com").isPresent()) {
-            var user = userMapper.map(userData);
-            userRepository.save(user);
-        }
+        // Сначала создаем статусы
+        createDefaultStatuses();
+        // Потом создаем пользователей
+        createDefaultUser();
+    }
 
+    private void createDefaultStatuses() {
         var defaultStatuses = new String[][]{
                 {"Draft", "draft"},
                 {"To Review", "to_review"},
@@ -53,7 +47,6 @@ public class DataInitializer implements ApplicationRunner {
                 {"Published", "published"}
         };
 
-        // Создаем статусы если они еще не существуют
         for (String[] status : defaultStatuses) {
             var statusName = status[0];
             var statusSlug = status[1];
@@ -66,4 +59,72 @@ public class DataInitializer implements ApplicationRunner {
             }
         }
     }
+
+    private void createDefaultUser() {
+        var faker = new Faker();
+        var userData = new UserCreateDTO();
+        userData.setEmail("hexlet@example.com");
+        userData.setPassword("qwerty");
+        userData.setFirstName(faker.name().firstName());
+        userData.setLastName(faker.name().lastName());
+
+        if (userRepository.findByEmail("hexlet@example.com").isEmpty()) {
+            var user = userMapper.map(userData);
+            userRepository.save(user);
+        }
+    }
 }
+
+//@Component
+//@AllArgsConstructor
+//public class DataInitializer implements ApplicationRunner {
+//
+//    @Autowired
+//    private final CustomUserDetailsService userService;
+//
+//    @Autowired
+//    private final UserRepository userRepository;
+//
+//    @Autowired
+//    private final UserMapper userMapper;
+//
+//    @Autowired
+//    private final TaskStatusRepository taskStatusRepository;
+//
+//
+//
+//    @Override
+//    public void run(ApplicationArguments args) throws Exception {
+//        var faker = new Faker();
+//        var userData = new UserCreateDTO();
+//        userData.setEmail("hexlet@example.com");
+//        userData.setPassword("qwerty");
+//        userData.setFirstName(faker.name().firstName());
+//        userData.setLastName(faker.name().lastName());
+//        if (!userRepository.findByEmail("hexlet@example.com").isPresent()) {
+//            var user = userMapper.map(userData);
+//            userRepository.save(user);
+//        }
+//
+//        var defaultStatuses = new String[][]{
+//                {"Draft", "draft"},
+//                {"To Review", "to_review"},
+//                {"To Be Fixed", "to_be_fixed"},
+//                {"To Publish", "to_publish"},
+//                {"Published", "published"}
+//        };
+//
+//        // Создаем статусы если они еще не существуют
+//        for (String[] status : defaultStatuses) {
+//            var statusName = status[0];
+//            var statusSlug = status[1];
+//
+//            if (taskStatusRepository.findBySlug(statusSlug).isEmpty()) {
+//                var taskStatus = new TaskStatus();
+//                taskStatus.setName(statusName);
+//                taskStatus.setSlug(statusSlug);
+//                taskStatusRepository.save(taskStatus);
+//            }
+//        }
+//    }
+//}

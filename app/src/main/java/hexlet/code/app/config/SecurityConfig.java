@@ -47,10 +47,16 @@ public class SecurityConfig {
                         .requestMatchers("/").permitAll()
                         .requestMatchers("/index.html").permitAll()
                         .requestMatchers("/assets/**").permitAll()
+                        // Настройки для task_statuses
                         .requestMatchers(HttpMethod.GET, "/api/task_statuses/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/task_statuses").authenticated()
                         .requestMatchers(HttpMethod.PUT, "/api/task_statuses/**").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/api/task_statuses/**").authenticated()
+                        // Настройки для tasks
+                        .requestMatchers(HttpMethod.GET, "/api/tasks/**").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/api/tasks").authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/api/tasks/**").authenticated()
+                        .requestMatchers(HttpMethod.DELETE, "/api/tasks/**").authenticated()
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .oauth2ResourceServer((rs) -> rs.jwt((jwt) -> jwt.decoder(jwtDecoder)))

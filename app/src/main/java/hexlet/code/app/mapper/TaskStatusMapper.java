@@ -5,8 +5,7 @@ import hexlet.code.app.model.TaskStatus;
 import org.mapstruct.*;
 
 @Mapper(
-        // Подключение JsonNullableMapper
-        uses = { JsonNullableMapper.class },
+        uses = { JsonNullableMapper.class, ReferenceMapper.class },
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
         componentModel = MappingConstants.ComponentModel.SPRING,
         unmappedTargetPolicy = ReportingPolicy.IGNORE
