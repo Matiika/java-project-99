@@ -30,8 +30,11 @@ public class TaskService {
 
     public TaskDTO create(TaskCreateDTO taskCreateDTO) {
         var task = taskMapper.map(taskCreateDTO);
-        taskRepository.save(task);
-        return taskMapper.map(task);
+        var savedTask = taskRepository.save(task);
+        var dto = taskMapper.map(savedTask);
+        return dto;
+
+        //return taskMapper.map(task);
     }
 
     public TaskDTO show(Long id) {

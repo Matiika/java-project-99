@@ -47,6 +47,7 @@ public class User implements UserDetails, BaseEntity {
 
     @Email
     @Column(unique = true)
+    @NotBlank
     private String email;
 
     @NotBlank
@@ -59,7 +60,7 @@ public class User implements UserDetails, BaseEntity {
     @LastModifiedDate
     private LocalDate updatedAt;
 
-    @OneToMany(mappedBy = "assignee", orphanRemoval = true)
+    @OneToMany(mappedBy = "assignee", cascade = CascadeType.MERGE, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Task> tasks = new ArrayList<>();
 
     public void addTask(Task task) {
