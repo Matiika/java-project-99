@@ -9,6 +9,7 @@ import hexlet.code.app.model.User;
 
 import org.openapitools.jackson.nullable.JsonNullable;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,6 +18,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+
+import java.util.List;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsManager {
@@ -28,6 +32,16 @@ public class CustomUserDetailsService implements UserDetailsManager {
 
     @Autowired
     private UserMapper userMapper;
+
+    public ResponseEntity<List<UserDTO>> index() {
+        var users = userRepository.findAll();
+        var result = users.stream()
+                .map(userMapper::map)
+                .toList();
+        return ResponseEntity.ok()
+                .header("X-Total-Count", String.valueOf(users.size()))
+                .body(result);
+    }
 
     public UserDTO create (UserCreateDTO userCreateDTO) {
         User user = userMapper.map(userCreateDTO);

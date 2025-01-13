@@ -1,9 +1,6 @@
 package hexlet.code.app.controller;
 
-import hexlet.code.app.DTO.TaskCreateDTO;
-import hexlet.code.app.DTO.TaskDTO;
-import hexlet.code.app.DTO.TaskStatusDTO;
-import hexlet.code.app.DTO.TaskUpdateDTO;
+import hexlet.code.app.DTO.*;
 import hexlet.code.app.service.TaskService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +17,17 @@ public class TaskController {
     @Autowired
     TaskService taskService;
 
-    @GetMapping(path = "")
+    @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<TaskDTO>> index() {
-        return taskService.index();
+    public ResponseEntity<List<TaskDTO>> index(TaskParamsDTO taskParamsDTO) {
+        return taskService.getAll(taskParamsDTO);
     }
+
+//    @GetMapping
+//    @ResponseStatus(HttpStatus.OK)
+//    public ResponseEntity<List<TaskDTO>> index() {
+//        return taskService.index();
+//    }
 
     @GetMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
@@ -32,7 +35,7 @@ public class TaskController {
         return taskService.show(id);
     }
 
-    @PostMapping(path = "")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public TaskDTO create(@RequestBody TaskCreateDTO taskCreateDTO) {
         return taskService.create(taskCreateDTO);

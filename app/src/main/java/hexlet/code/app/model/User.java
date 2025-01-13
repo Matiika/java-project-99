@@ -35,8 +35,8 @@ import java.util.List;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class User implements UserDetails, BaseEntity {
     @Id
-    @GeneratedValue(strategy = IDENTITY)
-    @EqualsAndHashCode.Include
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     private Long id;
 
     @NotBlank

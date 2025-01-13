@@ -25,7 +25,7 @@ public class TaskStatusController {
     @Autowired
     private TaskStatusMapper taskStatusMapper;
 
-    @GetMapping(path = "")
+    @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<TaskStatusDTO>> index() {
         var taskStatuses = taskStatusRepository.findAll();
@@ -44,7 +44,7 @@ public class TaskStatusController {
         return taskStatusMapper.map(taskStatus);
     }
 
-    @PostMapping(path = "")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public TaskStatusDTO create (@RequestBody TaskStatusCreateDTO taskStatusCreateDTO) {
         var taskStatus = taskStatusMapper.map(taskStatusCreateDTO);

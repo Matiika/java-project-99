@@ -1,6 +1,7 @@
 package hexlet.code.app.service;
 
 import hexlet.code.app.DTO.*;
+import hexlet.code.app.component.TaskSpecification;
 import hexlet.code.app.exception.ResourceNotFoundException;
 import hexlet.code.app.mapper.TaskMapper;
 import hexlet.code.app.model.Task;
@@ -28,6 +29,9 @@ public class TaskService {
     @Autowired
     private final UserRepository userRepository;
 
+    @Autowired
+    private TaskSpecification specBuilder;
+
     public TaskDTO create(TaskCreateDTO taskCreateDTO) {
         var task = taskMapper.map(taskCreateDTO);
         var savedTask = taskRepository.save(task);
@@ -41,6 +45,18 @@ public class TaskService {
         var task = taskRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Not found"));
         return taskMapper.map(task);
+    }
+
+    public ResponseEntity<List<TaskDTO>> getAll(TaskParamsDTO taskParamsDTO) {
+        var spec = specBuilder.build(taskParamsDTO);
+        var tasks = taskRepository.findAll(spec);
+        var result = tasks.stream()
+                .map(taskMapper::map)
+                .toList();
+
+        return ResponseEntity.ok()
+                .header("X-Total-Count", String.valueOf(tasks.size()))
+                .body(result);
     }
 
     public ResponseEntity<List<TaskDTO>> index() {

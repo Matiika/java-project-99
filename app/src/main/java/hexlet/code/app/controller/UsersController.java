@@ -50,15 +50,9 @@ public class UsersController {
 
     private final UserUtils userUtils;
 
-    @GetMapping(path = "")
-    ResponseEntity<List<UserDTO>> index() {
-        var users = userRepository.findAll();
-        var result = users.stream()
-                .map(userMapper::map)
-                .toList();
-        return ResponseEntity.ok()
-                .header("X-Total-Count", String.valueOf(users.size()))
-                .body(result);
+    @GetMapping
+    public ResponseEntity<List<UserDTO>> index() {
+        return userService.index();
     }
 
     @GetMapping(path = "/{id}")
@@ -69,7 +63,7 @@ public class UsersController {
         return userMapper.map(user);
     }
 
-    @PostMapping(path = "")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public UserDTO create(@RequestBody UserCreateDTO userCreateDTO) {
         return userService.create(userCreateDTO);
@@ -140,20 +134,20 @@ public class UsersController {
     //@PreAuthorize(value = "@userUtils.getCurrentUser().getEmail() == @userRepository.findById(#id).orElseThrow().getEmail()")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) {
-        var user = userRepository.findById(id)
+        userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
-        // Получаем текущего аутентифицированного пользователя
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentUsername = authentication.getName();
-
-        // Проверяем, что текущий пользователь является владельцем профиля
-        if (!currentUsername.equals(user.getEmail())) {
-            throw new ResponseStatusException(
-                    HttpStatus.FORBIDDEN,
-                    "You do not have permission to delete this user"
-            );
-        }
+//        // Получаем текущего аутентифицированного пользователя
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        String currentUsername = authentication.getName();
+//
+//        // Проверяем, что текущий пользователь является владельцем профиля
+//        if (!currentUsername.equals(user.getEmail())) {
+//            throw new ResponseStatusException(
+//                    HttpStatus.FORBIDDEN,
+//                    "You do not have permission to delete this user"
+//            );
+//        }
 
         userRepository.deleteById(id);
     }
