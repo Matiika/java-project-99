@@ -3,7 +3,9 @@ package hexlet.code.app.component;
 
 import hexlet.code.app.DTO.UserCreateDTO;
 import hexlet.code.app.mapper.UserMapper;
+import hexlet.code.app.model.Label;
 import hexlet.code.app.model.TaskStatus;
+import hexlet.code.app.repository.LabelRepository;
 import hexlet.code.app.repository.TaskStatusRepository;
 import hexlet.code.app.repository.UserRepository;
 import hexlet.code.app.service.CustomUserDetailsService;
@@ -30,12 +32,17 @@ public class DataInitializer implements ApplicationRunner {
     @Autowired
     private final TaskStatusRepository taskStatusRepository;
 
+    @Autowired
+    private final LabelRepository labelRepository;
+
     @Override
     public void run(ApplicationArguments args) throws Exception {
         // Сначала создаем статусы
         createDefaultStatuses();
-        // Потом создаем пользователей
+        // Создаем пользователей
         createDefaultUser();
+        // Создаем лейблы
+        createDefaultLabels();
     }
 
     private void createDefaultStatuses() {
@@ -56,6 +63,20 @@ public class DataInitializer implements ApplicationRunner {
                 taskStatus.setName(statusName);
                 taskStatus.setSlug(statusSlug);
                 taskStatusRepository.save(taskStatus);
+            }
+        }
+    }
+
+    private void createDefaultLabels() {
+        var defaultLabels = new String[]{
+                "feature", "bug"
+        };
+
+        for (String labelName : defaultLabels) {
+           if (labelRepository.findByName(labelName).isEmpty()) {
+                var label = new Label();
+                label.setName(labelName);
+                labelRepository.save(label);
             }
         }
     }

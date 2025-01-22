@@ -47,6 +47,8 @@ public class SecurityConfig {
                         .requestMatchers("/").permitAll()
                         .requestMatchers("/index.html").permitAll()
                         .requestMatchers("/assets/**").permitAll()
+                        .requestMatchers("/swagger-ui/**").permitAll()
+                        .requestMatchers("/v3/api-docs/**").permitAll()
                         // Настройки для task_statuses
                         .requestMatchers(HttpMethod.GET, "/api/task_statuses/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/task_statuses").authenticated()
@@ -57,6 +59,11 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/tasks").authenticated()
                         .requestMatchers(HttpMethod.PUT, "/api/tasks/**").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/api/tasks/**").authenticated()
+                        // Настройки для labels
+                        .requestMatchers(HttpMethod.GET, "/api/labels/**").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/api/labels").authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/api/labels/**").authenticated()
+                        .requestMatchers(HttpMethod.DELETE, "/api/labels/**").authenticated()
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .oauth2ResourceServer((rs) -> rs.jwt((jwt) -> jwt.decoder(jwtDecoder)))

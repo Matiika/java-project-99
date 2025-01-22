@@ -4,8 +4,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import hexlet.code.app.model.TaskStatus;
 import hexlet.code.app.model.User;
 import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
 import org.openapitools.jackson.nullable.JsonNullable;
 
+import java.util.Set;
+
+@Getter
+@Setter
 public class TaskUpdateDTO {
 
     @NotNull
@@ -22,5 +28,7 @@ public class TaskUpdateDTO {
 
     @NotNull
     @JsonProperty("assignee_id")
-    private JsonNullable<Long> assignee;
+    private JsonNullable<Long> assigneeId;
+
+    private JsonNullable<Set<Long>> taskLabelIds;
 }
