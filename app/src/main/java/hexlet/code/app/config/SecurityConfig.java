@@ -64,7 +64,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/labels").authenticated()
                         .requestMatchers(HttpMethod.PUT, "/api/labels/**").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/api/labels/**").authenticated()
-                        .anyRequest().authenticated())
+                        .anyRequest().permitAll())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .oauth2ResourceServer((rs) -> rs.jwt((jwt) -> jwt.decoder(jwtDecoder)))
                 .httpBasic(Customizer.withDefaults())

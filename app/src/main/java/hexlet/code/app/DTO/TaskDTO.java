@@ -12,6 +12,8 @@ import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -26,4 +28,5 @@ public class TaskDTO {
     @JsonProperty("assignee_id")
     private Long assigneeId;
     private LocalDate createdAt;
+    private Set<Long> taskLabelIds;
 }
