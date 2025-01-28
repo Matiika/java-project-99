@@ -4,7 +4,6 @@ import hexlet.code.app.DTO.label.LabelDTO;
 import hexlet.code.app.mapper.LabelMapper;
 import hexlet.code.app.model.Label;
 import hexlet.code.app.repository.LabelRepository;
-import hexlet.code.app.util.ModelGenerator;
 
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
@@ -24,7 +23,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import org.assertj.core.api.Assertions;
-import org.instancio.Instancio;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
