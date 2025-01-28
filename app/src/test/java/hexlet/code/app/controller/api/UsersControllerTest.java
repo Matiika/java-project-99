@@ -1,7 +1,6 @@
 package hexlet.code.app.controller.api;
 
 import hexlet.code.app.DTO.UserDTO;
-import hexlet.code.app.DTO.UserUpdateDTO;
 import hexlet.code.app.mapper.UserMapper;
 import hexlet.code.app.model.User;
 import hexlet.code.app.repository.UserRepository;
@@ -22,7 +21,6 @@ import static org.springframework.security.test.web.servlet.setup.SecurityMockMv
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.HashMap;
 
 
 import org.assertj.core.api.Assertions;

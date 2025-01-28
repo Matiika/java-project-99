@@ -127,7 +127,8 @@ public class UsersController {
 
     @DeleteMapping(path = "/{id}")
     @PreAuthorize(ONLY_OWNER_BY_ID)
-    //@PreAuthorize(value = "@userUtils.getCurrentUser().getEmail() == @userRepository.findById(#id).orElseThrow().getEmail()")
+    //@PreAuthorize(value = "@userUtils.getCurrentUser().getEmail()
+    // == @userRepository.findById(#id).orElseThrow().getEmail()")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) {
         userRepository.findById(id)

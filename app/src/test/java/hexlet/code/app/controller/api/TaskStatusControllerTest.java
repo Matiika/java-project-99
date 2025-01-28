@@ -78,7 +78,7 @@ public class TaskStatusControllerTest {
                 .getResponse();
 
         var body = response.getContentAsString();
-        List<TaskStatusDTO> taskStatusDTOs = om.readValue(body, new TypeReference<>() {});
+        List<TaskStatusDTO> taskStatusDTOs = om.readValue(body, new TypeReference<>(){});
 
         assertThat(response.getHeader("X-Total-Count"))
                 .isEqualTo(String.valueOf(taskStatusRepository.count()));

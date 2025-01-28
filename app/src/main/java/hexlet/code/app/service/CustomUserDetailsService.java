@@ -7,7 +7,6 @@ import hexlet.code.app.mapper.UserMapper;
 import hexlet.code.app.repository.UserRepository;
 import hexlet.code.app.model.User;
 
-import org.openapitools.jackson.nullable.JsonNullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,7 +17,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
 
@@ -43,7 +41,7 @@ public class CustomUserDetailsService implements UserDetailsManager {
                 .body(result);
     }
 
-    public UserDTO create (UserCreateDTO userCreateDTO) {
+    public UserDTO create (UserCreateDTO userCreateDTO){
         User user = userMapper.map(userCreateDTO);
         userRepository.save(user);
         return userMapper.map(user);

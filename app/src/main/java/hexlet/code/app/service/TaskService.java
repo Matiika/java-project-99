@@ -1,19 +1,18 @@
 package hexlet.code.app.service;
 
-import hexlet.code.app.DTO.*;
+import hexlet.code.app.DTO.TaskCreateDTO;
+import hexlet.code.app.DTO.TaskDTO;
+import hexlet.code.app.DTO.TaskParamsDTO;
+import hexlet.code.app.DTO.TaskUpdateDTO;
 import hexlet.code.app.component.TaskSpecification;
 import hexlet.code.app.exception.ResourceNotFoundException;
 import hexlet.code.app.mapper.TaskMapper;
-import hexlet.code.app.model.Task;
-import hexlet.code.app.model.User;
 import hexlet.code.app.repository.TaskRepository;
 import hexlet.code.app.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
