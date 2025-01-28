@@ -26,7 +26,7 @@ import java.util.List;
 @AllArgsConstructor
 public class TaskController {
     @Autowired
-    TaskService taskService;
+    private TaskService taskService;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)

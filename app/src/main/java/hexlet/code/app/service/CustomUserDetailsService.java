@@ -41,7 +41,7 @@ public class CustomUserDetailsService implements UserDetailsManager {
                 .body(result);
     }
 
-    public UserDTO create (UserCreateDTO userCreateDTO){
+    public UserDTO create(UserCreateDTO userCreateDTO) {
         User user = userMapper.map(userCreateDTO);
         userRepository.save(user);
         return userMapper.map(user);
