@@ -1,16 +1,11 @@
 package hexlet.code.app.DTO;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import hexlet.code.app.model.TaskStatus;
-import hexlet.code.app.model.User;
-import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.HashSet;
 import java.util.Set;
 
 @Getter

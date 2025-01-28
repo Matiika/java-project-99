@@ -4,7 +4,13 @@ import hexlet.code.app.DTO.label.LabelCreateDTO;
 import hexlet.code.app.DTO.label.LabelDTO;
 import hexlet.code.app.DTO.label.LabelUpdateDTO;
 import hexlet.code.app.model.Label;
-import org.mapstruct.*;
+
+import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.MappingConstants;
+import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.ReportingPolicy;
+
 
 @Mapper(
         uses = { JsonNullableMapper.class, ReferenceMapper.class },

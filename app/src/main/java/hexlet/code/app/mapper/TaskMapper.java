@@ -7,27 +7,25 @@ import hexlet.code.app.exception.ResourceNotFoundException;
 import hexlet.code.app.model.Label;
 import hexlet.code.app.model.Task;
 import hexlet.code.app.model.TaskStatus;
-import hexlet.code.app.model.User;
 import hexlet.code.app.repository.LabelRepository;
 import hexlet.code.app.repository.TaskStatusRepository;
 import hexlet.code.app.repository.UserRepository;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.validation.constraints.NotNull;
-import jdk.jfr.Name;
-import lombok.EqualsAndHashCode;
-import org.mapstruct.*;
-import org.openapitools.jackson.nullable.JsonNullable;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.annotation.CreatedDate;
 
-import java.time.LocalDate;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Named;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.MappingConstants;
+import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.ReportingPolicy;
+
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static jakarta.persistence.GenerationType.IDENTITY;
+
 
 @Mapper(
         uses = { JsonNullableMapper.class, ReferenceMapper.class },

@@ -1,18 +1,12 @@
 package hexlet.code.app.DTO;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import hexlet.code.app.model.TaskStatus;
-import hexlet.code.app.model.User;
-import jakarta.persistence.ManyToOne;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.Set;
 
 @Getter
