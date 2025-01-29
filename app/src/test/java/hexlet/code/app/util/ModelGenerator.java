@@ -1,10 +1,15 @@
 package hexlet.code.app.util;
 
+import hexlet.code.app.DTO.TaskCreateDTO;
 import hexlet.code.app.DTO.TaskStatusCreateDTO;
 import hexlet.code.app.DTO.TaskStatusUpdateDTO;
+import hexlet.code.app.DTO.TaskUpdateDTO;
 import hexlet.code.app.DTO.UserCreateDTO;
+import hexlet.code.app.model.Label;
+import hexlet.code.app.model.Task;
 import hexlet.code.app.model.TaskStatus;
 import hexlet.code.app.model.User;
+import hexlet.code.app.repository.UserRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.Getter;
 import net.datafaker.Faker;
@@ -15,14 +20,23 @@ import org.openapitools.jackson.nullable.JsonNullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.HashSet;
+
 @Getter
 @Component
 public class ModelGenerator {
     private Model<User> userModel;
     private Model<UserCreateDTO> userCreateDTOModel;
+    private Model<Task> taskModel;
+    private Model<TaskCreateDTO> taskCreateDTOModel;
+    private Model<TaskUpdateDTO> taskUpdateDTOModel;
+    private Model<Label> labelModel;
 
     @Autowired
     private Faker faker;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @PostConstruct
     private void init() {
@@ -36,12 +50,54 @@ public class ModelGenerator {
                 .ignore(Select.field(User::getUpdatedAt))
                 .toModel();
 
-        // Модель для DTO
         userCreateDTOModel = Instancio.of(UserCreateDTO.class)
                 .supply(Select.field(UserCreateDTO::getFirstName), () -> faker.name().firstName())
                 .supply(Select.field(UserCreateDTO::getLastName), () -> faker.name().lastName())
                 .supply(Select.field(UserCreateDTO::getEmail), () -> faker.internet().emailAddress())
                 .supply(Select.field(UserCreateDTO::getPassword), () -> faker.internet().password(3, 100))
+                .toModel();
+
+        taskModel = Instancio.of(Task.class)
+                .ignore(Select.field(Task::getId))
+                .supply(Select.field(Task::getTitle), () -> faker.lorem().sentence())
+                .supply(Select.field(Task::getContent), () -> faker.lorem().paragraph())
+                .supply(Select.field(Task::getIndex), () -> faker.number().randomNumber())
+                .set(Select.field(Task::getLabels), new HashSet<>())
+                .ignore(Select.field(Task::getCreatedAt))
+                .toModel();
+
+        taskCreateDTOModel = Instancio.of(TaskCreateDTO.class)
+                .supply(Select.field(TaskCreateDTO::getTitle), () -> faker.lorem().sentence())
+                .supply(Select.field(TaskCreateDTO::getContent), () -> faker.lorem().paragraph())
+                .supply(Select.field(TaskCreateDTO::getIndex), () -> faker.number().randomNumber())
+                .supply(Select.field(TaskCreateDTO::getStatus), () -> "draft")
+                .set(Select.field(TaskCreateDTO::getTaskLabelIds), new HashSet<>())
+                .toModel();
+
+        taskUpdateDTOModel = Instancio.of(TaskUpdateDTO.class)
+                .supply(Select.field(TaskUpdateDTO::getTitle), () -> JsonNullable.of(faker.lorem().sentence()))
+                .supply(Select.field(TaskUpdateDTO::getContent), () -> JsonNullable.of(faker.lorem().paragraph()))
+                .supply(Select.field(TaskUpdateDTO::getIndex), () -> JsonNullable.of(faker.number().randomNumber()))
+                .supply(Select.field(TaskUpdateDTO::getStatus), () -> JsonNullable.of("draft"))
+                .set(Select.field(TaskUpdateDTO::getTaskLabelIds), JsonNullable.of(new HashSet<>()))
+                .toModel();
+
+        labelModel = Instancio.of(Label.class)
+                .ignore(Select.field(Label::getId))
+                .supply(Select.field(Label::getName), () -> faker.lorem().word())
+                .ignore(Select.field(Label::getCreatedAt))
+                .toModel();
+
+        taskCreateDTOModel = Instancio.of(TaskCreateDTO.class)
+                .supply(Select.field(TaskCreateDTO::getTitle), () -> faker.lorem().sentence())
+                .supply(Select.field(TaskCreateDTO::getContent), () -> faker.lorem().paragraph())
+                .supply(Select.field(TaskCreateDTO::getIndex), () -> faker.number().randomNumber())
+                .supply(Select.field(TaskCreateDTO::getStatus), () -> "draft")
+                .supply(Select.field(TaskCreateDTO::getAssigneeId), () ->
+                        userRepository.findByEmail("hexlet@example.com")
+                                .map(User::getId)
+                                .orElse(null))
+                .set(Select.field(TaskCreateDTO::getTaskLabelIds), new HashSet<>())
                 .toModel();
     }
 
@@ -68,5 +124,4 @@ public class ModelGenerator {
                         () -> JsonNullable.of(faker.internet().slug()))
                 .toModel();
     }
-
 }
