@@ -173,7 +173,7 @@ public class UsersControllerTest {
                 .andReturn();
         var body = result.getResponse().getContentAsString();
         assertThatJson(body).and(
-                v -> v.node("username").isEqualTo(user.getEmail()),
+                v -> v.node("email").isEqualTo(user.getEmail()),
                 v -> v.node("firstName").isEqualTo(user.getFirstName()),
                 v -> v.node("lastName").isEqualTo(user.getLastName()));
     }

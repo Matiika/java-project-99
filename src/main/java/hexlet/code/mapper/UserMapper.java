@@ -31,11 +31,8 @@ public abstract class UserMapper {
 
     //public abstract User map(UserUpdateDTO model);
 
-
-    @Mapping(target = "username", source = "email")
     public abstract UserDTO map(User model);
 
-    @Mapping(target = "email", source = "username")
     public abstract User map(UserDTO model);
 
     public abstract void update(UserUpdateDTO update, @MappingTarget User destination);
