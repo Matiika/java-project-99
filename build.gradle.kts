@@ -3,7 +3,7 @@ plugins {
 	checkstyle
 	jacoco
 	id("io.freefair.lombok") version "8.6"
-	id("org.springframework.boot") version "3.4.0-SNAPSHOT"
+	id("org.springframework.boot") version "3.2.4-SNAPSHOT"
 	id("io.spring.dependency-management") version "1.1.6"
 	id ("io.sentry.jvm.gradle") version "4.14.1"
 }
@@ -54,7 +54,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
 
-	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.3")
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0")
 }
 
 tasks.withType<Test> {
