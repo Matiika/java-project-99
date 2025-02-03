@@ -136,7 +136,7 @@ public class LabelControllerTest {
                 .content(newLabelData);
 
         mockMvc.perform(request)
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
 
         var label = labelRepository.findByName(newLabelName).orElse(null);
 
@@ -191,7 +191,7 @@ public class LabelControllerTest {
                 .with(token);
 
         mockMvc.perform(request)
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
 
         assertThat(labelRepository.existsById(testLabel.getId())).isFalse();
     }
