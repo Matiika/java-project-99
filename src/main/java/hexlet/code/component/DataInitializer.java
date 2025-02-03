@@ -1,7 +1,7 @@
 package hexlet.code.component;
 
 
-import hexlet.code.DTO.UserCreateDTO;
+import hexlet.code.dto.UserCreateDTO;
 import hexlet.code.mapper.UserMapper;
 import hexlet.code.model.Label;
 import hexlet.code.model.TaskStatus;
@@ -9,30 +9,24 @@ import hexlet.code.repository.LabelRepository;
 import hexlet.code.repository.TaskStatusRepository;
 import hexlet.code.repository.UserRepository;
 import hexlet.code.service.CustomUserDetailsService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import net.datafaker.Faker;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
 @Component
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class DataInitializer implements ApplicationRunner {
 
-    @Autowired
     private final CustomUserDetailsService userService;
 
-    @Autowired
     private final UserRepository userRepository;
 
-    @Autowired
     private final UserMapper userMapper;
 
-    @Autowired
     private final TaskStatusRepository taskStatusRepository;
 
-    @Autowired
     private final LabelRepository labelRepository;
 
     @Override

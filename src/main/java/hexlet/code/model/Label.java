@@ -28,13 +28,15 @@ public class Label implements BaseEntity {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     @EqualsAndHashCode.Include
+    @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(unique = true)
+    @Column(name = "name", unique = true)
     @NotBlank
     @Size(min = 3, max = 1000)
     private String name;
 
+    @Column(name = "created_at")
     @CreatedDate
     private LocalDate createdAt;
 }

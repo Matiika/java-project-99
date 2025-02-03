@@ -1,15 +1,14 @@
 package hexlet.code.controller;
 
-import hexlet.code.DTO.UserCreateDTO;
-import hexlet.code.DTO.UserDTO;
-import hexlet.code.DTO.UserUpdateDTO;
+import hexlet.code.dto.UserCreateDTO;
+import hexlet.code.dto.UserDTO;
+import hexlet.code.dto.UserUpdateDTO;
 import hexlet.code.exception.ResourceNotFoundException;
 import hexlet.code.mapper.UserMapper;
 import hexlet.code.repository.UserRepository;
 import hexlet.code.service.CustomUserDetailsService;
 import hexlet.code.util.UserUtils;
-import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -27,7 +26,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UsersController {
     public static final String USER_CONTROLLER_PATH = "/users";
     public static final String ID = "/{id}";
@@ -38,11 +37,9 @@ public class UsersController {
 
     private final CustomUserDetailsService userService;
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private UserMapper userMapper;
+    private final UserMapper userMapper;
 
     private final UserUtils userUtils;
 

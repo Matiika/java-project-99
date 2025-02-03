@@ -1,17 +1,7 @@
 package hexlet.code.model;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.Table;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.FetchType;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
@@ -39,14 +29,17 @@ public class Task implements BaseEntity {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     @EqualsAndHashCode.Include
+    @Column(name = "id", nullable = false)
     private Long id;
 
+    @Column(name = "index")
     private Long index;
 
     @NotBlank
+    @Column(name = "title", nullable = false)
     private String title;
 
-
+    @Column(name = "content")
     private String content;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -65,5 +58,6 @@ public class Task implements BaseEntity {
     private Set<Label> labels = new LinkedHashSet<>();
 
     @CreatedDate
+    @Column(name = "created_at")
     private LocalDate createdAt;
 }

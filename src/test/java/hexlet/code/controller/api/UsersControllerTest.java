@@ -1,6 +1,6 @@
 package hexlet.code.controller.api;
 
-import hexlet.code.DTO.UserDTO;
+import hexlet.code.dto.UserDTO;
 import hexlet.code.mapper.UserMapper;
 import hexlet.code.model.User;
 import hexlet.code.repository.UserRepository;

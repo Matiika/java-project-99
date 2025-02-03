@@ -1,13 +1,12 @@
 package hexlet.code.controller;
 
-import hexlet.code.DTO.TaskStatusCreateDTO;
-import hexlet.code.DTO.TaskStatusDTO;
-import hexlet.code.DTO.TaskStatusUpdateDTO;
+import hexlet.code.dto.TaskStatusCreateDTO;
+import hexlet.code.dto.TaskStatusDTO;
+import hexlet.code.dto.TaskStatusUpdateDTO;
 import hexlet.code.exception.ResourceNotFoundException;
 import hexlet.code.mapper.TaskStatusMapper;
 import hexlet.code.repository.TaskStatusRepository;
-import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,13 +23,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/task_statuses")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class TaskStatusController {
-    @Autowired
-    private TaskStatusRepository taskStatusRepository;
 
-    @Autowired
-    private TaskStatusMapper taskStatusMapper;
+    private final TaskStatusRepository taskStatusRepository;
+
+    private final TaskStatusMapper taskStatusMapper;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)

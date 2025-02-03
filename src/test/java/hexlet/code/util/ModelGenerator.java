@@ -1,10 +1,10 @@
 package hexlet.code.util;
 
-import hexlet.code.DTO.TaskCreateDTO;
-import hexlet.code.DTO.TaskStatusCreateDTO;
-import hexlet.code.DTO.TaskStatusUpdateDTO;
-import hexlet.code.DTO.TaskUpdateDTO;
-import hexlet.code.DTO.UserCreateDTO;
+import hexlet.code.dto.TaskCreateDTO;
+import hexlet.code.dto.TaskStatusCreateDTO;
+import hexlet.code.dto.TaskStatusUpdateDTO;
+import hexlet.code.dto.TaskUpdateDTO;
+import hexlet.code.dto.UserCreateDTO;
 import hexlet.code.model.Label;
 import hexlet.code.model.Task;
 import hexlet.code.model.TaskStatus;

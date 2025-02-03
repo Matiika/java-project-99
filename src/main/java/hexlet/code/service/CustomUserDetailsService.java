@@ -1,13 +1,13 @@
 package hexlet.code.service;
 
-import hexlet.code.DTO.UserCreateDTO;
-import hexlet.code.DTO.UserDTO;
-import hexlet.code.DTO.UserUpdateDTO;
+import hexlet.code.dto.UserCreateDTO;
+import hexlet.code.dto.UserDTO;
+import hexlet.code.dto.UserUpdateDTO;
 import hexlet.code.mapper.UserMapper;
 import hexlet.code.repository.UserRepository;
 import hexlet.code.model.User;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -20,16 +20,17 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@RequiredArgsConstructor
 @Service
 public class CustomUserDetailsService implements UserDetailsManager {
-    @Autowired
-    private UserRepository userRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private UserMapper userMapper;
+
+    private final PasswordEncoder passwordEncoder;
+
+
+    private final UserMapper userMapper;
 
     public ResponseEntity<List<UserDTO>> index() {
         var users = userRepository.findAll();

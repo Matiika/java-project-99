@@ -1,12 +1,11 @@
 package hexlet.code.controller;
 
-import hexlet.code.DTO.TaskCreateDTO;
-import hexlet.code.DTO.TaskDTO;
-import hexlet.code.DTO.TaskParamsDTO;
-import hexlet.code.DTO.TaskUpdateDTO;
+import hexlet.code.dto.TaskCreateDTO;
+import hexlet.code.dto.TaskDTO;
+import hexlet.code.dto.TaskParamsDTO;
+import hexlet.code.dto.TaskUpdateDTO;
 import hexlet.code.service.TaskService;
-import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,10 +22,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/tasks")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class TaskController {
-    @Autowired
-    private TaskService taskService;
+
+    private final TaskService taskService;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)

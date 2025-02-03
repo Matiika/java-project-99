@@ -1,35 +1,31 @@
 package hexlet.code.service;
 
-import hexlet.code.DTO.TaskCreateDTO;
-import hexlet.code.DTO.TaskDTO;
-import hexlet.code.DTO.TaskParamsDTO;
-import hexlet.code.DTO.TaskUpdateDTO;
+import hexlet.code.dto.TaskCreateDTO;
+import hexlet.code.dto.TaskDTO;
+import hexlet.code.dto.TaskParamsDTO;
+import hexlet.code.dto.TaskUpdateDTO;
 import hexlet.code.component.TaskSpecification;
 import hexlet.code.exception.ResourceNotFoundException;
 import hexlet.code.mapper.TaskMapper;
 import hexlet.code.repository.TaskRepository;
 import hexlet.code.repository.UserRepository;
-import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class TaskService {
-    @Autowired
+
     private final TaskRepository taskRepository;
 
-    @Autowired
     private final TaskMapper taskMapper;
 
-    @Autowired
     private final UserRepository userRepository;
 
-    @Autowired
-    private TaskSpecification specBuilder;
+    private final TaskSpecification specBuilder;
 
     public TaskDTO create(TaskCreateDTO taskCreateDTO) {
         var task = taskMapper.map(taskCreateDTO);

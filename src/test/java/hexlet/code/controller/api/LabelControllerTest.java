@@ -1,6 +1,6 @@
 package hexlet.code.controller.api;
 
-import hexlet.code.DTO.label.LabelDTO;
+import hexlet.code.dto.label.LabelDTO;
 import hexlet.code.mapper.LabelMapper;
 import hexlet.code.model.Label;
 import hexlet.code.repository.LabelRepository;

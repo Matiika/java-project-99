@@ -1,6 +1,6 @@
 package hexlet.code.component;
 
-import hexlet.code.DTO.TaskParamsDTO;
+import hexlet.code.dto.TaskParamsDTO;
 import hexlet.code.model.Task;
 import jakarta.persistence.criteria.JoinType;
 import org.springframework.data.jpa.domain.Specification;

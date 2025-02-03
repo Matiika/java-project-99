@@ -1,9 +1,10 @@
 package hexlet.code.controller.api;
 
-import hexlet.code.DTO.AuthRequest;
+import hexlet.code.dto.AuthRequest;
 import hexlet.code.repository.UserRepository;
 import hexlet.code.util.ModelGenerator;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;

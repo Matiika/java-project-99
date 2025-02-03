@@ -41,24 +41,29 @@ public class User implements UserDetails, BaseEntity {
     private Long id;
 
     @NotBlank
+    @Column(name = "first_name")
     private String firstName;
 
     @NotBlank
+    @Column(name = "last_name")
     private String lastName;
 
     @Email
-    @Column(unique = true)
     @NotBlank
+    @Column(name = "email", unique = true)
     private String email;
 
     @NotBlank
     @Size(min = 3, max = 100)
+    @Column(name = "password_digest")
     private String passwordDigest;
 
     @CreatedDate
+    @Column(name = "created_at")
     private LocalDate createdAt;
 
     @LastModifiedDate
+    @Column(name = "updated_at")
     private LocalDate updatedAt;
 
     @OneToMany(mappedBy = "assignee", cascade = CascadeType.MERGE, fetch = FetchType.LAZY, orphanRemoval = true)
